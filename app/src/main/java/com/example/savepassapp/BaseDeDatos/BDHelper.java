@@ -57,6 +57,32 @@ public class BDHelper extends SQLiteOpenHelper {
 
     }
 
+    public void actualizarRegistro (String id, String titulo, String cuenta, String nombre_usuario, String password, String sitio_web,
+                                  String nota, String T_registro, String T_Actualizacion){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        /*Insertamos los datos*/
+        values.put(Constants.C_TITULO, titulo);
+        values.put(Constants.C_CUENTA, cuenta);
+        values.put(Constants.C_NOMBRE_USUARIO, nombre_usuario);
+        values.put(Constants.C_PASSWORD, password);
+        values.put(Constants.C_SITIO_WEB, sitio_web);
+        values.put(Constants.C_NOTA, nota);
+        values.put(Constants.C_TIEMPO_REGISTRO, T_registro);
+        values.put(Constants.C_TIEMPO_ACTUALIZACION, T_Actualizacion);
+
+        /*Actualizar la fila*/
+        db.update(Constants.TABLE_NAME, values, Constants.C_ID + " =? ", new String[]{id} );
+
+        /*Cerrar conexión de la base de datos*/
+        db.close();
+
+
+    }
+
 
     public ArrayList<Password> ObtenerTodosRegistros(String orderby){
         ArrayList<Password> passwordList = new ArrayList<>();
@@ -88,7 +114,6 @@ public class BDHelper extends SQLiteOpenHelper {
 
         return passwordList;
     }
-
 
     public ArrayList<Password> BuscarRegistros (String consulta){
         ArrayList<Password> passwordList = new ArrayList<>();

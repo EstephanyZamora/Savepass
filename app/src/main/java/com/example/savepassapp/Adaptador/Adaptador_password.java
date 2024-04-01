@@ -1,5 +1,6 @@
 package com.example.savepassapp.Adaptador;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -45,7 +46,7 @@ public class Adaptador_password extends RecyclerView.Adapter<Adaptador_password.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HolderPassword holder, int position) {
+    public void onBindViewHolder(@NonNull HolderPassword holder, @SuppressLint("RecyclerView") int position) {
         Password modelo_password =passwordList.get(position);
         String id =modelo_password.getId();
         String titulo = modelo_password.getTitulo();

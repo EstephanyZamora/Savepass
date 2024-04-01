@@ -79,7 +79,7 @@ public class Agregar_Actualizar_Registro extends AppCompatActivity {
         }
     }
 
-    private void Guardar_Password(){
+    private void Agregar_Actualizar_R(){
         /*OBTENER DATOS DE ENTRADA */
         titulo = EtTitulo.getText().toString().trim();
         cuenta = EtCuenta.getText().toString().trim();
@@ -88,31 +88,54 @@ public class Agregar_Actualizar_Registro extends AppCompatActivity {
         sitio_web = EtSitioWeb.getText().toString().trim();
         nota = EtNota.getText().toString().trim();
 
-        if (!titulo.equals("")){
+        if (MODO_EDICION){
             //Actualizar el registro
             /*Tiempo del dispositivo*/
             String tiempo_actual = ""+ System.currentTimeMillis();
-            long id= bdHelper.insertarRegistro(
+            bdHelper.actualizarRegistro(
+                    ""+ id,
                     ""+ titulo,
                     ""+ cuenta,
-                    ""+nombre_usuario,
-                    ""+password,
-                    ""+sitio_web,
-                    ""+nota,
-                    ""+tiempo_actual,
-                    ""+tiempo_actual
-
+                    ""+ nombre_usuario,
+                    ""+ password,
+                    ""+ sitio_web,
+                    ""+ nota,
+                    ""+ tiempo_registro,
+                    ""+ tiempo_actual
             );
 
-            Toast.makeText(this, "Se ha guardado la contraseña: "+id, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Actualizado con éxito", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(Agregar_Actualizar_Registro.this, MainActivity.class));
             finish();
 
         }
-        else{
-            EtTitulo.setError("Campo obligatorio");
-            EtTitulo.setFocusable(true);
+
+        else {
+            //Agregar un nuev registro
+            if (!titulo.equals("")){
+                /*Obtener el tiempo del dispositivo*/
+                String tiempo = ""+System.currentTimeMillis();
+                long id = bdHelper.insertarRegistro(
+                        "" + titulo,
+                        "" + cuenta,
+                        "" + nombre_usuario,
+                        ""+ password,
+                        ""+ sitio_web,
+                        ""+ nota,
+                        "" + tiempo,
+                        "" + tiempo
+                );
+
+                Toast.makeText(this, "Se ha guardado con éxito: ", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(Agregar_Actualizar_Registro.this, MainActivity.class));
+                finish();
+            }
+            else {
+                EtTitulo.setError("Campo obligatorio");
+                EtTitulo.setFocusable(true);
+            }
         }
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -124,7 +147,7 @@ public class Agregar_Actualizar_Registro extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId()==R.id.Guardar_Password){
-            Guardar_Password();
+            Agregar_Actualizar_R();
         }
 
         return super.onOptionsItemSelected(item);
