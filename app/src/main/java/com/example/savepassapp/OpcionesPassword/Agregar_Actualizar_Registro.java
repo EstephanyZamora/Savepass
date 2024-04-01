@@ -16,10 +16,14 @@ import com.example.savepassapp.BaseDeDatos.BDHelper;
 import com.example.savepassapp.MainActivity;
 import com.example.savepassapp.R;
 
-public class Agregar_Password extends AppCompatActivity {
+import java.io.ObjectStreamException;
+
+public class Agregar_Actualizar_Registro extends AppCompatActivity {
     EditText EtTitulo, EtCuenta, EtNombreUsuario, EtPassword, EtSitioWeb, EtNota;
 
     String id, titulo, cuenta, nombre_usuario, password, sitio_web, nota, tiempo_registro, tiempo_actualizacion;
+    private boolean MODO_EDICION = false;
+
     private BDHelper bdHelper;
 
 
@@ -32,6 +36,7 @@ public class Agregar_Password extends AppCompatActivity {
         actionBar.setTitle("");
 
         InicializarVariables();
+        ObtenerInformacion();
     }
 
     private void InicializarVariables(){
@@ -43,6 +48,35 @@ public class Agregar_Password extends AppCompatActivity {
         EtNota = findViewById(R.id.EtNota);
 
         bdHelper = new BDHelper(this);
+    }
+
+    private void ObtenerInformacion(){
+        Intent intent = getIntent();
+        MODO_EDICION = intent.getBooleanExtra("MODO_EDICION", false);
+
+        if (MODO_EDICION){
+            //Verdadero
+            id = intent.getStringExtra("ID");
+            titulo = intent.getStringExtra("TITULO");
+            cuenta = intent.getStringExtra("CUENTA");
+            nombre_usuario = intent.getStringExtra("NOMBRE_USUARIO");
+            password = intent.getStringExtra("PASSWORD");
+            sitio_web = intent.getStringExtra("SITIO_WEB");
+            nota = intent.getStringExtra("NOTA");
+            tiempo_registro = intent.getStringExtra("T_REGISTRO");
+            tiempo_actualizacion = intent.getStringExtra("T_ACTUALIZACION");
+
+            /*Seteamos la información recuperada en las vistas*/
+            EtTitulo.setText(titulo);
+            EtCuenta.setText(cuenta);
+            EtNombreUsuario.setText(nombre_usuario);
+            EtPassword.setText(password);
+            EtSitioWeb.setText(sitio_web);
+            EtNota.setText(nota);
+        }
+        else {
+            //Falso, se agrega un nuevo registro
+        }
     }
 
     private void Guardar_Password(){
@@ -71,7 +105,7 @@ public class Agregar_Password extends AppCompatActivity {
             );
 
             Toast.makeText(this, "Se ha guardado la contraseña: "+id, Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(Agregar_Password.this, MainActivity.class));
+            startActivity(new Intent(Agregar_Actualizar_Registro.this, MainActivity.class));
             finish();
 
         }

@@ -18,12 +18,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.savepassapp.Adaptador.Adaptador_password;
 import com.example.savepassapp.BaseDeDatos.BDHelper;
 import com.example.savepassapp.BaseDeDatos.Constants;
-import com.example.savepassapp.OpcionesPassword.Agregar_Password;
+import com.example.savepassapp.OpcionesPassword.Agregar_Actualizar_Registro;
 import com.example.savepassapp.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -51,11 +50,9 @@ public class F_Todas extends Fragment {
         FAB_AgregarPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // startActivity(new Intent(getActivity(), Agregar_Password.class));
-
-                Intent intent = new Intent(getActivity(), Agregar_Password.class);
+                Intent intent = new Intent(getActivity(), Agregar_Actualizar_Registro.class);
+                intent.putExtra("MODO_EDICION", false);
                 startActivity(intent);
-
             }
         });
         return view;

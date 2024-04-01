@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.savepassapp.Detalle.Detalle_registro;
 import com.example.savepassapp.Modelo.Password;
+import com.example.savepassapp.OpcionesPassword.Agregar_Actualizar_Registro;
 import com.example.savepassapp.R;
 
 import java.util.ArrayList;
@@ -72,7 +73,18 @@ public class Adaptador_password extends RecyclerView.Adapter<Adaptador_password.
         holder.ib_mas_opciones.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Opciones_Editar_Eliminar();
+                Opciones_Editar_Eliminar(
+                        ""+ position,
+                        ""+ id,
+                        ""+ titulo,
+                        ""+ cuenta,
+                        ""+ nombre_usuario,
+                        ""+ password,
+                        ""+ sitio_web,
+                        ""+ nota,
+                        ""+ tiempo_registro,
+                        ""+ tiempo_actualizacion
+                );
 
             }
         });
@@ -105,7 +117,9 @@ public class Adaptador_password extends RecyclerView.Adapter<Adaptador_password.
         }
     }
 
-     private void Opciones_Editar_Eliminar(){
+     private void Opciones_Editar_Eliminar(String posicion, String id, String titulo, String cuenta,
+                                           String nombre_usuario, String password, String sitio_web,
+                                           String nota,String tiempo_registro, String tiempo_actualizacion){
          Button Btn_Editar_Registro, Btn_Eliminar_Registro;
 
          dialog.setContentView(R.layout.cuadro_dialogo_editar_eliminar);
@@ -116,7 +130,19 @@ public class Adaptador_password extends RecyclerView.Adapter<Adaptador_password.
          Btn_Editar_Registro.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
-                 Toast.makeText(context, "Editar registro: ", Toast.LENGTH_SHORT).show();
+                 Intent intent = new Intent(context, Agregar_Actualizar_Registro.class);
+                 intent.putExtra("POSICION", posicion);
+                 intent.putExtra("ID", id);
+                 intent.putExtra("TITULO", titulo);
+                 intent.putExtra("CUENTA", cuenta);
+                 intent.putExtra("NOMBRE_USUARIO", nombre_usuario);
+                 intent.putExtra("PASSWORD", password);
+                 intent.putExtra("SITIO_WEB", sitio_web);
+                 intent.putExtra("NOTA", nota);
+                 intent.putExtra("T_REGISTRO", tiempo_registro);
+                 intent.putExtra("T_ACTUALIZACION", tiempo_actualizacion);
+                 intent.putExtra("MODO_EDICION", true);
+                 context.startActivity(intent);
                  dialog.dismiss();
 
              }
