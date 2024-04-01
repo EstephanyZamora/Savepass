@@ -1,12 +1,15 @@
 package com.example.savepassapp.Adaptador;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,9 +25,12 @@ public class Adaptador_password extends RecyclerView.Adapter<Adaptador_password.
     private Context context;
     private ArrayList<Password> passwordList;
 
+    Dialog dialog;
+
     public Adaptador_password (Context context, ArrayList<Password> passwordList){
         this.context =context;
         this.passwordList = passwordList;
+        dialog = new Dialog(context);
 
     }
 
@@ -66,6 +72,7 @@ public class Adaptador_password extends RecyclerView.Adapter<Adaptador_password.
         holder.ib_mas_opciones.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Opciones_Editar_Eliminar();
 
             }
         });
@@ -97,4 +104,36 @@ public class Adaptador_password extends RecyclerView.Adapter<Adaptador_password.
 
         }
     }
+
+     private void Opciones_Editar_Eliminar(){
+         Button Btn_Editar_Registro, Btn_Eliminar_Registro;
+
+         dialog.setContentView(R.layout.cuadro_dialogo_editar_eliminar);
+
+         Btn_Editar_Registro = dialog.findViewById(R.id.Btn_Editar_Registro);
+         Btn_Eliminar_Registro = dialog.findViewById(R.id.Btn_Eliminar_Registro);
+
+         Btn_Editar_Registro.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 Toast.makeText(context, "Editar registro: ", Toast.LENGTH_SHORT).show();
+                 dialog.dismiss();
+
+             }
+         });
+         Btn_Eliminar_Registro.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 Toast.makeText(context, "Eliminar registro: ", Toast.LENGTH_SHORT).show();
+                 dialog.dismiss();
+
+             }
+         });
+
+         dialog.show();
+         dialog.setCancelable(true);
+
+     }
+
+
 }
