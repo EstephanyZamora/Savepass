@@ -18,7 +18,7 @@
             android:theme="@style/AppTheme"
             />
         <activity
-            android:name=".OpcionesPassword.Agregar_Password"
+            android:name=".OpcionesPassword.Agregar_Actualizar_Registro"
             android:exported="false"
             android:theme="@style/AppTheme" />
         <activity

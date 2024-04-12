@@ -1,18 +1,23 @@
 package com.example.savepassapp.Adaptador;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.savepassapp.Detalle.Detalle_registro;
 import com.example.savepassapp.Modelo.Password;
+import com.example.savepassapp.OpcionesPassword.Agregar_Actualizar_Registro;
 import com.example.savepassapp.R;
 
 import java.util.ArrayList;
@@ -22,9 +27,12 @@ public class Adaptador_password extends RecyclerView.Adapter<Adaptador_password.
     private Context context;
     private ArrayList<Password> passwordList;
 
+    Dialog dialog;
+
     public Adaptador_password (Context context, ArrayList<Password> passwordList){
         this.context =context;
         this.passwordList = passwordList;
+        dialog = new Dialog(context);
 
     }
 
@@ -38,7 +46,7 @@ public class Adaptador_password extends RecyclerView.Adapter<Adaptador_password.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HolderPassword holder, int position) {
+    public void onBindViewHolder(@NonNull HolderPassword holder, @SuppressLint("RecyclerView") int position) {
         Password modelo_password =passwordList.get(position);
         String id =modelo_password.getId();
         String titulo = modelo_password.getTitulo();
@@ -66,6 +74,18 @@ public class Adaptador_password extends RecyclerView.Adapter<Adaptador_password.
         holder.ib_mas_opciones.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Opciones_Editar_Eliminar(
+                        ""+ position,
+                        ""+ id,
+                        ""+ titulo,
+                        ""+ cuenta,
+                        ""+ nombre_usuario,
+                        ""+ password,
+                        ""+ sitio_web,
+                        ""+ nota,
+                        ""+ tiempo_registro,
+                        ""+ tiempo_actualizacion
+                );
 
             }
         });
@@ -97,4 +117,50 @@ public class Adaptador_password extends RecyclerView.Adapter<Adaptador_password.
 
         }
     }
+
+     private void Opciones_Editar_Eliminar(String posicion, String id, String titulo, String cuenta,
+                                           String nombre_usuario, String password, String sitio_web,
+                                           String nota,String tiempo_registro, String tiempo_actualizacion){
+         Button Btn_Editar_Registro, Btn_Eliminar_Registro;
+
+         dialog.setContentView(R.layout.cuadro_dialogo_editar_eliminar);
+
+         Btn_Editar_Registro = dialog.findViewById(R.id.Btn_Editar_Registro);
+         Btn_Eliminar_Registro = dialog.findViewById(R.id.Btn_Eliminar_Registro);
+
+         Btn_Editar_Registro.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 Intent intent = new Intent(context, Agregar_Actualizar_Registro.class);
+                 intent.putExtra("POSICION", posicion);
+                 intent.putExtra("ID", id);
+                 intent.putExtra("TITULO", titulo);
+                 intent.putExtra("CUENTA", cuenta);
+                 intent.putExtra("NOMBRE_USUARIO", nombre_usuario);
+                 intent.putExtra("PASSWORD", password);
+                 intent.putExtra("SITIO_WEB", sitio_web);
+                 intent.putExtra("NOTA", nota);
+                 intent.putExtra("T_REGISTRO", tiempo_registro);
+                 intent.putExtra("T_ACTUALIZACION", tiempo_actualizacion);
+                 intent.putExtra("MODO_EDICION", true);
+                 context.startActivity(intent);
+                 dialog.dismiss();
+
+             }
+         });
+         Btn_Eliminar_Registro.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 Toast.makeText(context, "Eliminar registro: ", Toast.LENGTH_SHORT).show();
+                 dialog.dismiss();
+
+             }
+         });
+
+         dialog.show();
+         dialog.setCancelable(true);
+
+     }
+
+
 }

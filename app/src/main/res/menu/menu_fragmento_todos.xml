@@ -12,6 +12,13 @@
         />
 
     <item
+        android:id="@+id/menu_Ordenar_registros"
+        android:title="@string/menu_Ordenar_registros"
+        android:icon="@drawable/icono_ordenar_registros"
+        app:showAsAction="ifRoom"
+        />
+
+    <item
         android:id="@+id/menu_Numero_registros"
         android:title="@string/menu_Numero_registros"
         android:icon="@drawable/icono_numero_registros"

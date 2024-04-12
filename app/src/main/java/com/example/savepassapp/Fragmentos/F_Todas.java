@@ -18,12 +18,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.savepassapp.Adaptador.Adaptador_password;
 import com.example.savepassapp.BaseDeDatos.BDHelper;
 import com.example.savepassapp.BaseDeDatos.Constants;
-import com.example.savepassapp.OpcionesPassword.Agregar_Password;
+import com.example.savepassapp.OpcionesPassword.Agregar_Actualizar_Registro;
 import com.example.savepassapp.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -33,7 +32,13 @@ public class F_Todas extends Fragment {
     FloatingActionButton FAB_AgregarPassword;
     RecyclerView recyclerView_Registros;
 
-    Dialog dialog;
+    Dialog dialog, dialog_ordenar;
+
+    String ordenarNuevos = Constants.C_TIEMPO_REGISTRO + " DESC";
+    String ordenarPasados = Constants.C_TIEMPO_REGISTRO + " ASC";
+    String ordenarTituloAsc = Constants.C_TITULO + " ASC";
+    String ordenarTituloDes = Constants.C_TITULO + " DESC";
+    String EstadoOrden = ordenarTituloAsc;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,25 +50,25 @@ public class F_Todas extends Fragment {
         FAB_AgregarPassword = view.findViewById(R.id.FAB_AgregaPassword);
         helper = new BDHelper(getActivity());
         dialog = new Dialog(getActivity());
+        dialog_ordenar = new Dialog(getActivity());
 
-        CargarRegistros();
+        CargarRegistros(ordenarTituloAsc);
 
         FAB_AgregarPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // startActivity(new Intent(getActivity(), Agregar_Password.class));
-
-                Intent intent = new Intent(getActivity(), Agregar_Password.class);
+                Intent intent = new Intent(getActivity(), Agregar_Actualizar_Registro.class);
+                intent.putExtra("MODO_EDICION", false);
                 startActivity(intent);
-
             }
         });
         return view;
     }
 
-    private void CargarRegistros() {
+    private void CargarRegistros(String orderby) {
+        EstadoOrden = orderby;
         Adaptador_password adaptador_password = new Adaptador_password(getActivity(), helper.ObtenerTodosRegistros(
-                Constants.C_TITULO + " ASC"));
+                orderby));
         recyclerView_Registros.setAdapter(adaptador_password);
     }
 
@@ -103,6 +108,11 @@ public class F_Todas extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
+        if(id==R.id.menu_Ordenar_registros){
+            Ordenar_Registros();
+            return true;
+
+        }
         if (id == R.id.menu_Numero_registros) {
            Visualizar_Total_Registros();
             return true;
@@ -114,6 +124,12 @@ public class F_Todas extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onResume() {
+        CargarRegistros(EstadoOrden);
+        super.onResume();
     }
 
     private void Visualizar_Total_Registros() {
@@ -140,6 +156,57 @@ public class F_Todas extends Fragment {
 
         dialog.show();
         dialog.setCancelable(false);
+
+
+    }
+
+    private void Ordenar_Registros(){
+        Button Btn_Nuevos, Btn_Pasados, Btn_Asc, Btn_Des;
+
+        dialog_ordenar.setContentView(R.layout.cuadro_dialogo_ordenar_registros);
+
+
+        Btn_Nuevos = dialog_ordenar.findViewById(R.id.Btn_Nuevos);
+        Btn_Pasados = dialog_ordenar.findViewById(R.id.Btn_Pasados);
+        Btn_Asc = dialog_ordenar.findViewById(R.id.Btn_Asc);
+        Btn_Des = dialog_ordenar.findViewById(R.id.Btn_Des);
+
+
+        Btn_Nuevos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CargarRegistros(ordenarNuevos);
+                dialog_ordenar.dismiss();
+            }
+        });
+
+        Btn_Pasados.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CargarRegistros(ordenarPasados);
+                dialog_ordenar.dismiss();
+            }
+        });
+
+        Btn_Asc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CargarRegistros(ordenarTituloAsc);
+                dialog_ordenar.dismiss();
+            }
+        });
+
+        Btn_Des.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CargarRegistros(ordenarTituloDes);
+                dialog_ordenar.dismiss();
+            }
+        });
+
+        dialog_ordenar.show();
+        dialog_ordenar.setCancelable(true);
+
 
 
     }
