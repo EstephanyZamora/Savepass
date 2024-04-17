@@ -59,6 +59,7 @@ public class Adaptador_password extends RecyclerView.Adapter<Adaptador_password.
         String password = modelo_password.getPassword();
         String sitio_web = modelo_password.getSitio_web();
         String nota = modelo_password.getNota();
+        String imagen = modelo_password.getImagen();
         String tiempo_registro = modelo_password.getT_registro();
         String tiempo_actualizacion = modelo_password.getT_actualiacion();
 
@@ -87,6 +88,7 @@ public class Adaptador_password extends RecyclerView.Adapter<Adaptador_password.
                         ""+ password,
                         ""+ sitio_web,
                         ""+ nota,
+                        ""+ imagen,
                         ""+ tiempo_registro,
                         ""+ tiempo_actualizacion
                 );
@@ -124,7 +126,7 @@ public class Adaptador_password extends RecyclerView.Adapter<Adaptador_password.
 
      private void Opciones_Editar_Eliminar(String posicion, String id, String titulo, String cuenta,
                                            String nombre_usuario, String password, String sitio_web,
-                                           String nota,String tiempo_registro, String tiempo_actualizacion){
+                                           String nota, String imagen, String tiempo_registro, String tiempo_actualizacion){
          Button Btn_Editar_Registro, Btn_Eliminar_Registro;
 
          dialog.setContentView(R.layout.cuadro_dialogo_editar_eliminar);
@@ -144,6 +146,7 @@ public class Adaptador_password extends RecyclerView.Adapter<Adaptador_password.
                  intent.putExtra("PASSWORD", password);
                  intent.putExtra("SITIO_WEB", sitio_web);
                  intent.putExtra("NOTA", nota);
+                 intent.putExtra("IMAGEN", imagen);
                  intent.putExtra("T_REGISTRO", tiempo_registro);
                  intent.putExtra("T_ACTUALIZACION", tiempo_actualizacion);
                  intent.putExtra("MODO_EDICION", true);

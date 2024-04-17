@@ -1,9 +1,11 @@
 package com.example.savepassapp.Modelo;
 
-public class Password {
-    String id, titulo, cuenta, nombre_usuario, password, sitio_web, nota, t_registro, t_actualiacion;
+import javax.xml.transform.sax.SAXResult;
 
-    public Password(String id, String titulo, String cuenta, String nombre_usuario, String password, String sitio_web, String nota, String t_registro, String t_actualiacion) {
+public class Password {
+    String id, titulo, cuenta, nombre_usuario, password, sitio_web, nota, imagen, t_registro, t_actualiacion;
+
+    public Password(String id, String titulo, String cuenta, String nombre_usuario, String password, String sitio_web, String nota, String imagen,String t_registro, String t_actualiacion) {
         this.id = id;
         this.titulo = titulo;
         this.cuenta = cuenta;
@@ -11,6 +13,7 @@ public class Password {
         this.password = password;
         this.sitio_web = sitio_web;
         this.nota = nota;
+        this.imagen = imagen;
         this.t_registro = t_registro;
         this.t_actualiacion = t_actualiacion;
     }
@@ -70,6 +73,10 @@ public class Password {
     public void setNota(String nota) {
         this.nota = nota;
     }
+
+    public String getImagen(){return imagen; }
+
+    public void setImagen(String imagen){this.imagen=imagen; }
 
     public String getT_registro() {
         return t_registro;

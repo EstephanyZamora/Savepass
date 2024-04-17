@@ -31,7 +31,7 @@ public class BDHelper extends SQLiteOpenHelper {
     }
 
     public long insertarRegistro (String titulo, String cuenta, String nombre_usuario, String password, String sitio_web,
-                                  String nota, String T_registro, String T_Actualizacion){
+                                  String nota, String imagen, String T_registro, String T_Actualizacion){
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -44,6 +44,7 @@ public class BDHelper extends SQLiteOpenHelper {
         values.put(Constants.C_PASSWORD, password);
         values.put(Constants.C_SITIO_WEB, sitio_web);
         values.put(Constants.C_NOTA, nota);
+        values.put(Constants.C_IMAGEN, imagen);
         values.put(Constants.C_TIEMPO_REGISTRO, T_registro);
         values.put(Constants.C_TIEMPO_ACTUALIZACION, T_Actualizacion);
 
@@ -58,7 +59,7 @@ public class BDHelper extends SQLiteOpenHelper {
     }
 
     public void actualizarRegistro (String id, String titulo, String cuenta, String nombre_usuario, String password, String sitio_web,
-                                  String nota, String T_registro, String T_Actualizacion){
+                                  String nota, String imagen, String T_registro, String T_Actualizacion){
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -71,6 +72,7 @@ public class BDHelper extends SQLiteOpenHelper {
         values.put(Constants.C_PASSWORD, password);
         values.put(Constants.C_SITIO_WEB, sitio_web);
         values.put(Constants.C_NOTA, nota);
+        values.put(Constants.C_IMAGEN, imagen);
         values.put(Constants.C_TIEMPO_REGISTRO, T_registro);
         values.put(Constants.C_TIEMPO_ACTUALIZACION, T_Actualizacion);
 
@@ -102,6 +104,7 @@ public class BDHelper extends SQLiteOpenHelper {
                         ""+cursor.getString(cursor.getColumnIndex(Constants.C_PASSWORD)),
                         ""+cursor.getString(cursor.getColumnIndex(Constants.C_SITIO_WEB)),
                         ""+cursor.getString(cursor.getColumnIndex(Constants.C_NOTA)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.C_IMAGEN)),
                         ""+cursor.getString(cursor.getColumnIndex(Constants.C_TIEMPO_REGISTRO)),
                         ""+cursor.getString(cursor.getColumnIndex(Constants.C_TIEMPO_ACTUALIZACION)));
 
@@ -133,6 +136,7 @@ public class BDHelper extends SQLiteOpenHelper {
                         ""+cursor.getString(cursor.getColumnIndex(Constants.C_PASSWORD)),
                         ""+cursor.getString(cursor.getColumnIndex(Constants.C_SITIO_WEB)),
                         ""+cursor.getString(cursor.getColumnIndex(Constants.C_NOTA)),
+                        ""+cursor.getString(cursor.getColumnIndex(Constants.C_IMAGEN)),
                         ""+cursor.getString(cursor.getColumnIndex(Constants.C_TIEMPO_REGISTRO)),
                         ""+cursor.getString(cursor.getColumnIndex(Constants.C_TIEMPO_ACTUALIZACION)));
 

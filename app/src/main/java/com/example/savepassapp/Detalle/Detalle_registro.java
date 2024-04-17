@@ -8,10 +8,12 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.format.DateFormat;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +31,7 @@ public class Detalle_registro extends AppCompatActivity {
 
     String id_registro;
 
+    ImageView D_Imagen;
     BDHelper helper;
 
     @Override
@@ -66,6 +69,8 @@ public class Detalle_registro extends AppCompatActivity {
         D_Nota = findViewById(R.id.D_Nota);
         D_Tiempo_registro = findViewById(R.id.D_Tiempo_registro);
         D_Tiempo_actualizacion = findViewById(R.id.D_Tiempo_actualizacion);
+        D_Imagen = findViewById(R.id.D_Imagen);
+
     }
 
     private void MostrarInformacionRegistro(){
@@ -83,6 +88,7 @@ public class Detalle_registro extends AppCompatActivity {
                 @SuppressLint("Range") String password = ""+cursor.getString(cursor.getColumnIndex(Constants.C_PASSWORD));
                 @SuppressLint("Range") String sitio_web = ""+cursor.getString(cursor.getColumnIndex(Constants.C_SITIO_WEB));
                 @SuppressLint("Range") String nota = ""+cursor.getString(cursor.getColumnIndex(Constants.C_NOTA));
+                @SuppressLint("Range") String imagen = ""+cursor.getString(cursor.getColumnIndex(Constants.C_IMAGEN));
                 @SuppressLint("Range") String t_registro = ""+cursor.getString(cursor.getColumnIndex(Constants.C_TIEMPO_REGISTRO));
                 @SuppressLint("Range") String t_actualizacion = ""+cursor.getString(cursor.getColumnIndex(Constants.C_TIEMPO_ACTUALIZACION));
 
@@ -111,6 +117,13 @@ public class Detalle_registro extends AppCompatActivity {
                 D_Nota.setText(nota);
                 D_Tiempo_registro.setText(tiempo_registro);
                 D_Tiempo_actualizacion.setText(tiempo_actualizacion);
+
+                if (imagen.equals("null")){
+                    D_Imagen.setImageResource(R.drawable.imagen); // Utiliza una imagen por defecto en caso de que la referencia sea nula
+                } else if (!imagen.isEmpty()) {
+                    D_Imagen.setImageURI(Uri.parse(imagen));
+                }
+
 
 
             }while (cursor.moveToNext());
