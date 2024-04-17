@@ -125,6 +125,15 @@ public class Agregar_Actualizar_Registro extends AppCompatActivity {
                 Imagen.setImageURI(imagenUri);
                 Iv_imagen_eliminar.setVisibility(View.VISIBLE);
             }
+
+            Iv_imagen_eliminar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    imagenUri = null;
+                    Imagen.setImageResource(R.drawable.imagen);
+                    Toast.makeText(Agregar_Actualizar_Registro.this, "Imagen eliminada", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
 
