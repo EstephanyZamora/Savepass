@@ -12,7 +12,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.format.DateFormat;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +35,8 @@ public class Detalle_registro extends AppCompatActivity {
 
     ImageView D_Imagen;
     BDHelper helper;
+
+    ImageButton Im_Ir_Web;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +60,18 @@ public class Detalle_registro extends AppCompatActivity {
         actionBar.setTitle(titulo_registro);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
+        Im_Ir_Web.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url_pagina_web = D_SitioWeb.getText().toString().trim();
 
+                if (!url_pagina_web.equals("")){
+                    abrirPaginaWeb(url_pagina_web);
+                }else {
+                    Toast.makeText(Detalle_registro.this, "No existe una url", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
     }
 
@@ -70,6 +85,8 @@ public class Detalle_registro extends AppCompatActivity {
         D_Tiempo_registro = findViewById(R.id.D_Tiempo_registro);
         D_Tiempo_actualizacion = findViewById(R.id.D_Tiempo_actualizacion);
         D_Imagen = findViewById(R.id.D_Imagen);
+        Im_Ir_Web = findViewById(R.id.Im_Ir_Web);
+
 
     }
 
@@ -133,7 +150,10 @@ public class Detalle_registro extends AppCompatActivity {
         db.close();
 
     }
-
+    private void abrirPaginaWeb(String url_pagina_web) {
+        Intent navegar = new Intent(Intent.ACTION_VIEW, Uri.parse("https://"+url_pagina_web));
+        startActivity(navegar);
+    }
 
     @Override
     public boolean onSupportNavigateUp() {
