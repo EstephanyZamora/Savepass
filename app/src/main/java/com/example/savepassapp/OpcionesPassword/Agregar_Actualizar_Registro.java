@@ -1,15 +1,29 @@
 package com.example.savepassapp.OpcionesPassword;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.savepassapp.BaseDeDatos.BDHelper;
@@ -20,11 +34,18 @@ import java.io.ObjectStreamException;
 
 public class Agregar_Actualizar_Registro extends AppCompatActivity {
     EditText EtTitulo, EtCuenta, EtNombreUsuario, EtPassword, EtSitioWeb, EtNota;
+    ImageView Imagen;
+    Button Btn_Adjuntar_Imagen;
 
     String id, titulo, cuenta, nombre_usuario, password, sitio_web, nota, tiempo_registro, tiempo_actualizacion;
+
+    Uri imagenUri = null;
+
     private boolean MODO_EDICION = false;
 
     private BDHelper bdHelper;
+
+    ImageView Iv_imagen_eliminar;
 
 
     @Override
@@ -37,7 +58,21 @@ public class Agregar_Actualizar_Registro extends AppCompatActivity {
 
         InicializarVariables();
         ObtenerInformacion();
+
+        Btn_Adjuntar_Imagen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ContextCompat.checkSelfPermission(getApplicationContext(),
+                        Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
+                    TomarFotografia();
+                }else {
+                    SolicitudPermisoCamara.launch(Manifest.permission.CAMERA);
+                }
+
+            }
+        });
     }
+
 
     private void InicializarVariables(){
         EtTitulo = findViewById(R.id.EtTitulo);
@@ -46,6 +81,11 @@ public class Agregar_Actualizar_Registro extends AppCompatActivity {
         EtPassword = findViewById(R.id.EtPassword);
         EtSitioWeb = findViewById(R.id.EtSitioWeb);
         EtNota = findViewById(R.id.EtNota);
+
+        Imagen = findViewById(R.id.Imagen);
+        Btn_Adjuntar_Imagen = findViewById(R.id.Btn_Adjuntar_Imagen);
+
+        Iv_imagen_eliminar = findViewById(R.id.Iv_eliminar_imagen);
 
         bdHelper = new BDHelper(this);
     }
@@ -63,6 +103,7 @@ public class Agregar_Actualizar_Registro extends AppCompatActivity {
             password = intent.getStringExtra("PASSWORD");
             sitio_web = intent.getStringExtra("SITIO_WEB");
             nota = intent.getStringExtra("NOTA");
+            imagenUri = Uri.parse(intent.getStringExtra("IMAGEN"));
             tiempo_registro = intent.getStringExtra("T_REGISTRO");
             tiempo_actualizacion = intent.getStringExtra("T_ACTUALIZACION");
 
@@ -73,7 +114,29 @@ public class Agregar_Actualizar_Registro extends AppCompatActivity {
             EtPassword.setText(password);
             EtSitioWeb.setText(sitio_web);
             EtNota.setText(nota);
+
+            /*Si la imagen no existe*/
+            if (imagenUri.toString().equals("null")){
+                Imagen.setImageResource(R.drawable.imagen);
+                Iv_imagen_eliminar.setVisibility(View.VISIBLE);
+            }
+            /*Si la imagen existe*/
+            else {
+                Imagen.setImageURI(imagenUri);
+                Iv_imagen_eliminar.setVisibility(View.VISIBLE);
+            }
+
+            Iv_imagen_eliminar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    imagenUri = null;
+                    Imagen.setImageResource(R.drawable.imagen);
+                    Toast.makeText(Agregar_Actualizar_Registro.this, "Imagen eliminada", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
+
+
         else {
             //Falso, se agrega un nuevo registro
         }
@@ -100,6 +163,7 @@ public class Agregar_Actualizar_Registro extends AppCompatActivity {
                     ""+ password,
                     ""+ sitio_web,
                     ""+ nota,
+                    ""+ imagenUri,
                     ""+ tiempo_registro,
                     ""+ tiempo_actual
             );
@@ -122,6 +186,7 @@ public class Agregar_Actualizar_Registro extends AppCompatActivity {
                         ""+ password,
                         ""+ sitio_web,
                         ""+ nota,
+                        ""+ imagenUri,
                         "" + tiempo,
                         "" + tiempo
                 );
@@ -152,4 +217,41 @@ public class Agregar_Actualizar_Registro extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    private void TomarFotografia() {
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE, "Nueva imagen");
+        values.put(MediaStore.Images.Media.DESCRIPTION, "Descripción");
+        imagenUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, imagenUri);
+        camaraAcivityResultLauncher.launch(intent);
+
+    }
+
+    private ActivityResultLauncher<Intent> camaraAcivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK){
+                        Imagen.setImageURI(imagenUri);
+                    }
+                    else {
+                        Toast.makeText(Agregar_Actualizar_Registro.this, "Cancelado por el usuario", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+    );
+    private  ActivityResultLauncher<String> SolicitudPermisoCamara =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), Concede_permiso ->{
+                if (Concede_permiso){
+                    TomarFotografia();
+                }else {
+                    Toast.makeText(this, "Permiso denegado", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+
 }

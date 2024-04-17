@@ -23,6 +23,7 @@
     <string name="EtPassword">Contraseña</string>
     <string name="EtSitioWeb">Sitio Web</string>
     <string name="EtNota">Nota</string>
+    <string name="Btn_Adjuntar_Imagen">Adjuntar imagen</string>
 
     <!-- Diseño menu agregar password-->
 
