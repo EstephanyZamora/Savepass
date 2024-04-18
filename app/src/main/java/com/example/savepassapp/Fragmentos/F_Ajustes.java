@@ -1,9 +1,13 @@
 package com.example.savepassapp.Fragmentos;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.Environment;
@@ -20,8 +24,10 @@ import com.example.savepassapp.BaseDeDatos.Constants;
 import com.example.savepassapp.MainActivity;
 import com.example.savepassapp.Modelo.Password;
 import com.example.savepassapp.R;
+import com.opencsv.CSVReader;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
 
@@ -66,13 +72,34 @@ public class F_Ajustes extends Fragment {
         Importar_Archivo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "Importar archivo", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("¿Importar CSV?");
+                builder.setMessage("Se eliminarán todos los registros actuales.");
+                builder.setPositiveButton("Continuar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
+                            bdHelper.EliminarTodosRegistros();
+                            ImportarRegistros();
+
+                    }
+                });
+                builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getActivity(), "Importación cancelada", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                builder.create().show();
             }
         });
 
         return view;
     }
+
+
+
     private void Dialog_Eliminar_Registros() {
         Button Btn_Si, Btn_Cancelar;
 
@@ -156,6 +183,49 @@ public class F_Ajustes extends Fragment {
             Log.d("Ruta de archivo", Carpeta_Archivo);
 
             Toast.makeText(getActivity(), "Error al exportar: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private void ImportarRegistros() {
+        //Establecer la ruta
+        String Carpeta_Archivo = Environment.getExternalStorageDirectory()+ "/Documents/" + "/Savepass App/" + "Registro.csv";
+        File file = new File(Carpeta_Archivo);
+        if (file.exists()){
+            // Si el respaldo existe
+            try {
+                CSVReader csvReader = new CSVReader(new FileReader(file.getAbsoluteFile()));
+                String [] nextLine;
+                while ((nextLine = csvReader.readNext())!=null){
+                    String ids = nextLine[0];
+                    String titulo = nextLine[1];
+                    String cuenta = nextLine[2];
+                    String nombre_usuario = nextLine[3];
+                    String password = nextLine[4];
+                    String sitio_web = nextLine[5];
+                    String nota = nextLine[6];
+                    String imagen = nextLine[7];
+                    String tiempoR = nextLine[8];
+                    String tiempoA = nextLine[9];
+
+                    long id = bdHelper.insertarRegistro(
+                            ""+titulo,
+                            ""+ cuenta,
+                            ""+ nombre_usuario,
+                            ""+password,
+                            ""+sitio_web,
+                            ""+ nota,
+                            ""+imagen,
+                            ""+tiempoR,
+                            ""+tiempoA);
+                }
+                Toast.makeText(getActivity(), "Archivo CSV importado con éxito", Toast.LENGTH_SHORT).show();
+            }catch (Exception e){
+                Toast.makeText(getActivity(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+        else {
+            Toast.makeText(getActivity(), "No existe un respaldo", Toast.LENGTH_SHORT).show();
         }
 
     }
