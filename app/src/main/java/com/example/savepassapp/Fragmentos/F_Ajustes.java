@@ -132,7 +132,7 @@ public class F_Ajustes extends Fragment {
 
     private void ExportarRegistros() {
         //Nombre de la carpeta
-        File carpeta = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "Savepass App");
+        File carpeta = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "Savepass");
 
         if (!carpeta.exists()){
             //Si la carpeta no existe, creamos una nueva
@@ -140,7 +140,7 @@ public class F_Ajustes extends Fragment {
         }
 
         //Nombre del archivo
-        String csvnombreArchivo = "Registro.csv";
+        String csvnombreArchivo = "Registropass.csv";
 
         //Concatenar el nombre de la carpeta y del archivo
         String Carpeta_Archivo = carpeta + "/" + csvnombreArchivo;
@@ -189,7 +189,7 @@ public class F_Ajustes extends Fragment {
 
     private void ImportarRegistros() {
         //Establecer la ruta
-        String Carpeta_Archivo = Environment.getExternalStorageDirectory()+ "/Documents/" + "/Savepass App/" + "Registro.csv";
+        String Carpeta_Archivo = Environment.getExternalStorageDirectory()+ "/Documents/" + "/Savepass/" + "Registropass.csv";
         File file = new File(Carpeta_Archivo);
         if (file.exists()){
             // Si el respaldo existe

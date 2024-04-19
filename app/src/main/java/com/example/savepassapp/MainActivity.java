@@ -7,14 +7,17 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
 import android.widget.Toast;
 import android.window.OnBackInvokedDispatcher;
 
+import com.example.savepassapp.Fragmentos.F_AcercaDe;
 import com.example.savepassapp.Fragmentos.F_Ajustes;
 import com.example.savepassapp.Fragmentos.F_Todas;
+import com.example.savepassapp.Login_usuario.Logeo_usuario;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -63,12 +66,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     new F_Ajustes()).commit();
 
         }
+
+        if(id == R.id.Opcion_Acercade){
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new F_AcercaDe()).commit();
+
+        }
         if(id == R.id.Opcion_Salir){
-            Toast.makeText(this, "Cerraste sesión", Toast.LENGTH_SHORT).show();
+            CerrarSesion();
         }
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void CerrarSesion() {
+        startActivity(new Intent(MainActivity.this, Logeo_usuario.class));
+        Toast.makeText(this, "Cerraste sesión", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     @Override
