@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -51,6 +52,7 @@ public class Agregar_Actualizar_Registro extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE , WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_agregar_password);
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
@@ -191,7 +193,7 @@ public class Agregar_Actualizar_Registro extends AppCompatActivity {
                         "" + tiempo
                 );
 
-                Toast.makeText(this, "Se ha guardado con éxito: ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Se ha guardado con éxito ", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(Agregar_Actualizar_Registro.this, MainActivity.class));
                 finish();
             }

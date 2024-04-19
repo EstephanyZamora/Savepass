@@ -3,6 +3,7 @@
     <!-- Drawer menu -->
     <string name="Opcion_Todas">Todas</string>
     <string name="Opcion_Ajustes">Ajustes</string>
+    <string name="AcercaDe">Acerca De</string>
     <string name="Opcion_Salir">Salir</string>
 
     <!-- Drawerloyout -->
@@ -98,7 +99,7 @@
     <string name="Btn_cancelar_password_maestra">Cancelar</string>
 
     <!--Registro-->
-    <string name="TXTBienvenidos">¡Bienvenidos(as)!</string>
+    <string name="TXTBienvenidos">BIENVENIDO</string>
     <string name="TXTMensaje">Por favor introduzca una contraseña maestra</string>
     <string name="EtPasswordU">Contraseña</string>
     <string name="EtCPassword">Confirmar contraseña</string>
@@ -112,8 +113,8 @@
     <string name="BtnInicioSesionBiometrico">Autenticación biométrica</string>
 
     <!--Información de la aplicación-->
-    <string name="DesarrolladorTXT">Desarrollado por: Marco Barón Effio</string>
-    <string name="CorreoContactoTXT">Contacto: marco@gmail.com</string>
+    <string name="DesarrolladorTXT">Desarrollado por: Estephany Zamora</string>
+    <string name="CorreoContactoTXT">Contacto: ezamorac11417@gmail.com</string>
     <string name="VersionTXT">Versión: 1.0</string>
 
     <string name="Ir_terminos_politicas">Políticas de privacidad</string>

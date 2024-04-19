@@ -14,6 +14,11 @@
         android:icon="@drawable/icono_ajustes"
         />
     <item
+        android:title="@string/AcercaDe"
+        android:id="@+id/Opcion_Acercade"
+        android:icon="@drawable/icono_acerca_de"
+        />
+    <item
         android:title="@string/Opcion_Salir"
         android:id="@+id/Opcion_Salir"
         android:icon="@drawable/icono_salir"
